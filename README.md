@@ -13,7 +13,7 @@ full file paths).
 
 ![Screenshot](res/screenshot.png)
 
-## Recommended xdebug.ini setup:
+## Xdebug 配置文件
 
 ### xdebug_delete.php   后台定时删除脚本
 ### xdebug_redis.php    后台解析脚本
