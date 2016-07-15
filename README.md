@@ -27,13 +27,13 @@ PHP 需安装 redis 和 xdebug 扩展
 PHP.ini  xdebug配置
 
 [Xdebug]
-zend_extension = "/usr/local/php/xdebug/xdebug.so"  // 这配置根据自己的 xdebug.so 路径配置
+zend_extension = "/usr/local/php/xdebug/xdebug.so" // 这配置根据自己的 xdebug.so 路径配置
 xdebug.auto_trace= off
 xdebug.show_exception_trace=on
 xdebug.remote_autostart=on
 xdebug.remote_enable= on
 xdebug.remote_host=localhost
-xdebug.trace_output_dir="/tmp/xdebug/"     // 这个配置请保留  是xdebug输出文件的路径  且目录有读写权限
+xdebug.trace_output_dir="/tmp/xdebug/" // 这个配置请保留  是xdebug输出文件的路径  且目录有读写权限
 xdebug.trace_output_name=
 xdebug.remote_handler=dbgp
 xdebug.trace_enable_trigger=on
