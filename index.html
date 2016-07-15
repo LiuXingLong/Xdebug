@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+    <title>XDebug Trace Tree</title>
+    <link href="res/css/style.css" rel="stylesheet">
+    <script src="res/js/jquery-2.2.1.min.js"></script>
+    <script src="res/js/jquery.cookie.js"></script>
+    <script src="res/js/bootstrap.min.js"></script>
+    <script src="res/select2/select2.js"></script> 
+    <link href="res/select2/select2.css" rel="stylesheet">
+    <link href="res/css/bootstyle.css" rel="stylesheet">
+    <script src="res/js/script.js"></script>
+</head>
+<body>
+<div class="load">
+    <label for="file">File:</label>
+    <select name="file" class="js-example-basic-single" id="file">
+    <!--  显示文件 -->
+    </select>
+    <button onclick="download()">下载文件</button>
+    <button style="margin-left:20px;" onclick="refresh()">刷新文件</button>
+    <br/>
+    <p>当前搜索文件名： <code> <!-- 当前搜索文件 --> </code></p>
+    <p>函数堆栈调:<span id = "stack_url" style="font-weight:bold"></span></p>
+</div>
+
+<label>Search:</label>
+<input type="text" class="search" name="search">
+<button onclick="search()">搜索方法</button>
+
+<button style = "margin-left: 120px;"  onclick="delete1()">删除文件</button>
+
+<input type="checkbox" id="checkbox" />
+<label for="checkbox"></label>
+
+<ul class="help">
+    <li>下载文件：先这一个文件下载</li>
+    <li>下载文件后：点击函数名、加、减，进行函数展开、折叠切换；点击函数参数可以展开参数</li>
+    <li>Search：搜索函数、类函数（在当前Load下的文件搜索）</li>
+    <li>文件标记或对应的函数可切换到该函数所在的调用路径下</li>
+    <li>文件夹标记或对应的函数可进入函数内部</li>
+    <li>文件夹向上标记切换到父方法下</li>
+    <li>向左箭头返回搜索结果</li>
+</ul>
+<div class="f header">
+    <div class="func">Function Call</div>
+    <div class="data">
+        <span class="file">File:Line</span>
+        <span class="timediff">Time</span>
+        <span class="memorydiff">Memory</span>
+        <span class="time">Time</span>
+    </div>
+</div>
+
+<!-- preloader section -->
+<div class="preloader" style="display:none;">
+    <div class="sk-spinner sk-spinner-wordpress">
+       <span class="sk-inner-circle"></span>
+     </div>
+</div>
+
+<div class="d main"><!--  树形内容 --></div>
+<div class="main1"></div>
+</body>
+</html>
