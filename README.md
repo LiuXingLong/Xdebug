@@ -15,23 +15,62 @@ full file paths).
 
 ## Recommended xdebug.ini setup:
 
-Refer to https://xdebug.org/docs/stack_trace for detailled xdebug setup info.
+xdebug_delete.php   后台定时删除脚本
+xdebug_redis.php    后台解析脚本
+./res/conf.php      配置文件
 
-    xdebug.trace_enable_trigger=1
-    xdebug.trace_output_dir=/tmp/
-    xdebug.trace_output_name=xdebug.trace.%t.%R
-    xdebug.show_mem_delta=1
-    xdebug.collect_params=4
-    xdebug.collect_return=1
-    xdebug.trace_format=1
 
-## License
+PHP 配置说明
 
-The MIT License (MIT)  
-Copyright (c) 2016 Andreas Gohr <andi@splitbrain.org>
+PHP 需安装 redis 和 xdebug 扩展
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+PHP.ini  xdebug配置
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+[Xdebug]
+zend_extension = "/usr/local/php/xdebug/xdebug.so"  // 这配置根据自己的 xdebug.so 路径配置
+xdebug.auto_trace= off
+xdebug.show_exception_trace=on
+xdebug.remote_autostart=on
+xdebug.remote_enable= on
+xdebug.remote_host=localhost
+xdebug.trace_output_dir="/tmp/xdebug/"     // 这个配置请保留  是xdebug输出文件的路径  且目录有读写权限
+xdebug.trace_output_name=
+xdebug.remote_handler=dbgp
+xdebug.trace_enable_trigger=on
+xdebug.show_mem_delta=on
+xdebug.collect_vars=on
+xdebug.collect_params=4
+xdebug.collect_return=on
+xdebug.trace_format=on
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+nginx.conf  配置
+
+location ~ \.php$ {
+        #   root           html;
+            fastcgi_pass   127.0.0.1:9000;
+        #   fastcgi_index  index.php;
+            fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+            set $php_value "";
+            if ($http_cookie ~* "xdebug_status=1") {
+                set $php_value "xdebug.trace_output_name=$remote_addr#_'$time_iso8601'_#%R";
+                set $php_value "$php_value \n xdebug.auto_trace=on";
+            }
+            if ($http_cookie ~* "xdebug_status=0") {
+                set $php_value "xdebug.trace_output_name=";
+                set $php_value "$php_value \n xdebug.auto_trace=off";
+            }
+            if ($document_uri ~* "xdebug") {
+                set $php_value "xdebug.trace_output_name=";
+                set $php_value "$php_value \n xdebug.auto_trace=off";
+            }
+            fastcgi_connect_timeout 600;
+            fastcgi_send_timeout 600;
+            fastcgi_read_timeout 600;
+            fastcgi_param  PHP_VALUE  $php_value;
+            include        fastcgi_params;
+        }
+
+配置完后重启  nginx 和 php-fpm
