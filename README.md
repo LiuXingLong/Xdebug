@@ -5,13 +5,13 @@
 ### ./res/conf.php      配置文件
 
 
-### PHP 配置说明
+## PHP 配置说明
 
 ### PHP 需安装 redis 和 xdebug 扩展
 
 ### PHP.ini  xdebug配置
 
-#### [Xdebug]
+### [Xdebug]
 ##### zend_extension = "/usr/local/php/xdebug/xdebug.so" // 这配置根据自己的 xdebug.so 路径配置
 ##### xdebug.auto_trace= off
 ##### xdebug.show_exception_trace=on
@@ -31,7 +31,7 @@
 
 
 
-#### nginx.conf  配置
+### nginx.conf  配置
 
 ##### location ~ \.php$ {
 #####        #   root           html;
@@ -58,4 +58,4 @@
 #####            include        fastcgi_params;
 #####        }
 
-#### 配置完后重启  nginx 和 php-fpm
+### 配置完后重启  nginx 和 php-fpm
